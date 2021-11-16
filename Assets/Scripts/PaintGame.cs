@@ -1,20 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PaintGame : MonoBehaviour
 {
+
+    public UnityEvent OnGameStart;
+    public UnityEvent OnGameEnd;
+    public UnityEvent<GameColor> OnSwitchColor;
+
+    public UnityEvent<Color> OnCaptureColor;
+
     public PaintGamePresets gamePreset;
 
     [SerializeField]
-    private RenderTexture _viewRenderTexture;
+    private bool _useColorSampler = true;
 
     private GameColor _currentColor;
     private int _currentColorIndex = 0;
+    private bool _colorCaptured;
 
+    private float _gameTimer = 0.0f;
 
-    //Testing
-    public Material textureTestPlane;
+    [SerializeField]
+    private bool _runTimer = true;
+
+    [SerializeField]
+    private ViewColorSampler _viewColorSampler;
 
 
     // Start is called before the first frame update
@@ -26,33 +39,81 @@ public class PaintGame : MonoBehaviour
             this.enabled = false;
         }    
         
-        
+        StartGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
-        
-        
-        RenderTexture.active = _viewRenderTexture;
-        
-        Texture2D texture = new Texture2D(_viewRenderTexture.width,_viewRenderTexture.height);
-        
-        //Graphics.CopyTexture(_viewRenderTexture,texture);
-        texture.ReadPixels(new Rect(0,0,texture.width,texture.height),0,0,false);
-        texture.Apply(false);
-        textureTestPlane.SetTexture("RenderToText",texture);
-        textureTestPlane.mainTexture =  texture;
-        
-        
+        if(_runTimer)
+            _gameTimer += Time.deltaTime;
 
-        Color textureColor = texture.GetPixel(texture.width/2,texture.height/2);
-        // Matches the current color's range with the center of the view image
-        bool matchesCurrentColor = _currentColor.IsColorInRange(textureColor);
-        Debug.Log(textureColor);
-        Debug.Log(matchesCurrentColor);
-        RenderTexture.active = null;
+        // Check if the time for this color has passed
+        if(Mathf.Round(_gameTimer) % Mathf.Round(gamePreset.SecondsPerColor) == 0)
+        {
+            if(!AdvanceColor())
+            {
+                if(_gameTimer >= gamePreset.GameDuration)
+                    OnGameEnd.Invoke();
+
+            }
+
+        }
+
+              
+        if(_useColorSampler)
+        {
+            
+            Color sampledColor = 
+                _viewColorSampler.CaptureColorOnScreen(0.5f,0.5f);
+
+            bool matchesColor = _currentColor.IsColorInRange(sampledColor);
+
+            // Use this bool to only send the efent once after finding the right
+            // color
+            bool foundColor = false;
+            if(matchesColor && !foundColor)
+            {
+                OnCaptureColor.Invoke(sampledColor);
+                
+                foundColor = true;
+
+            }
+            else if(!matchesColor)
+                foundColor = false;
+        }
+
+
+    }
+
+    public void StartGame()
+    {
+        _currentColorIndex = 0;
+        _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
+        if(!_viewColorSampler) //Try to get the sampler from this game object
+            _viewColorSampler = GetComponent<ViewColorSampler>();
+        if(!_viewColorSampler) // If still nothing, don't try to use it
+            _useColorSampler = false;
+
+        OnGameStart.Invoke();
+        OnSwitchColor.Invoke(_currentColor);
+    }
+    
+    ///<summary>Tries to advance to the next color in the preset list
+    ///</summary>
+    ///<returns> True if successful, False if all colors have been advanced trough</returns>
+    private bool AdvanceColor()
+    {
+        if(_currentColorIndex == gamePreset.ColorsToPaint.Length - 1)
+        {
+            //All colors have been advanced
+            return false;
+        }
+        
+        _currentColorIndex ++;
+        _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
+        OnSwitchColor.Invoke(_currentColor);
+        return true;
     }
 
 }

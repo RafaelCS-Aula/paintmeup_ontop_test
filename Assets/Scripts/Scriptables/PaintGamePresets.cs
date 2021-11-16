@@ -13,6 +13,7 @@ public class PaintGamePresets : ScriptableObject
     public int GameDuration {get => _secondsPerColor + _extraEndSeconds;}
 
     [SerializeField] private GameColor[] _colorsToPaint;
+    public GameColor[] ColorsToPaint {get => _colorsToPaint;}
 
 
 

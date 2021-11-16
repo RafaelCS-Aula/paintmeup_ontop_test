@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19cbef9748132106a42f9ff0eebb7cb, type: 3}
   m_Name: StandartGame
   m_EditorClassIdentifier: 
-  _secondsPerColor: 0
-  _extraEndSeconds: 0
-  _colorsToPaint: []
+  _secondsPerColor: 20
+  _extraEndSeconds: 20
+  _colorsToPaint:
+  - {fileID: 11400000, guid: 42e7ae21a9e3821aaa83bff36a0dd1d1, type: 2}

@@ -19,13 +19,26 @@ public class GameColor : ScriptableObject
 
         do
         {
-            if(_colorRange.Evaluate(evalProgress) == color)
+            Debug.Log("Evaluating against color: " + _colorRange.Evaluate(evalProgress) + "at step of the gradient: " + evalProgress);
+            if(CompareColors(_colorRange.Evaluate(evalProgress),color))
                 return true;
 
             evalProgress += evalStep;
+            
 
         }while(evalProgress < 1.00f);
         return false;
+    }
+
+    private bool CompareColors(Color a, Color b)
+    {
+        if(Math.Round(a.r) != Math.Round(b.r))
+            return false;
+        if(Math.Round(a.g) != Math.Round(b.g))
+            return false;
+        if(Math.Round(a.b) != Math.Round(b.b))
+            return false;
+        return true;
     }
 
 

@@ -13,6 +13,10 @@ public class PaintGame : MonoBehaviour
     private int _currentColorIndex = 0;
 
 
+    //Testing
+    public Material textureTestPlane;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +25,7 @@ public class PaintGame : MonoBehaviour
             Debug.LogError("No game pre-set found");
             this.enabled = false;
         }    
-        RenderTexture.active = _viewRenderTexture;
+        
         
     }
 
@@ -31,10 +35,16 @@ public class PaintGame : MonoBehaviour
         _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
         
         
-
+        RenderTexture.active = _viewRenderTexture;
+        
         Texture2D texture = new Texture2D(_viewRenderTexture.width,_viewRenderTexture.height);
         
-        Graphics.CopyTexture(_viewRenderTexture,texture);
+        //Graphics.CopyTexture(_viewRenderTexture,texture);
+        texture.ReadPixels(new Rect(0,0,texture.width,texture.height),0,0,false);
+        texture.Apply(false);
+        textureTestPlane.SetTexture("RenderToText",texture);
+        textureTestPlane.mainTexture =  texture;
+        
         
 
         Color textureColor = texture.GetPixel(texture.width/2,texture.height/2);
@@ -42,6 +52,7 @@ public class PaintGame : MonoBehaviour
         bool matchesCurrentColor = _currentColor.IsColorInRange(textureColor);
         Debug.Log(textureColor);
         Debug.Log(matchesCurrentColor);
+        RenderTexture.active = null;
     }
 
 }

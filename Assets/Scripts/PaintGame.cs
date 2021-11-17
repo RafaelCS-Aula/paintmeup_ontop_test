@@ -13,6 +13,9 @@ public class PaintGame : MonoBehaviour
 
     public UnityEvent<Color> OnCaptureColor;
 
+    public UnityEvent OnBeginDetectObject;
+    public UnityEvent OnStopDetectObject;
+
     public PaintGamePresets gamePreset;
 
     [SerializeField]
@@ -30,6 +33,11 @@ public class PaintGame : MonoBehaviour
     [SerializeField]
     private ViewColorSampler _viewColorSampler;
 
+    //Object detection
+    [SerializeField] private LayerMask _detectableObjects;
+
+    private bool _foundObject = false;
+    private bool _detectingObject = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,9 +69,10 @@ public class PaintGame : MonoBehaviour
 
         }
 
-              
-        if(_useColorSampler)
+        
+        if(_useColorSampler && !_detectingObject)
         {
+            
             
             Color sampledColor = 
                 _viewColorSampler.CaptureColorOnScreen(0.5f,0.5f);
@@ -86,6 +95,26 @@ public class PaintGame : MonoBehaviour
             }
                 
         }
+
+        //Detect Object
+        RaycastHit hits;
+        Ray centerRay = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f));
+        _detectingObject = Physics.Raycast(centerRay,out hits, 2000,_detectableObjects);
+
+        if(_detectingObject && !_foundObject)
+        {
+            OnBeginDetectObject.Invoke();
+            _foundObject = true;
+        }
+        else if(!_detectingObject && _foundObject)
+        {
+            OnStopDetectObject.Invoke();
+            _foundObject = false;
+        }
+
+
+
+    
 
 
     }

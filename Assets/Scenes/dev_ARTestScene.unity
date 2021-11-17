@@ -609,10 +609,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnBeginDetectObject:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopDetectObject:
+    m_PersistentCalls:
+      m_Calls: []
   gamePreset: {fileID: 11400000, guid: 28115657ebf65138eb71bfeff18f02f9, type: 2}
   _useColorSampler: 1
   _runTimer: 1
   _viewColorSampler: {fileID: 1810997808}
+  _detectableObjects:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1810997810
 Transform:
   m_ObjectHideFlags: 0

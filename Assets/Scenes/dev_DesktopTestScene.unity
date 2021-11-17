@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 262534087}
   - component: {fileID: 262534088}
+  - component: {fileID: 262534089}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -167,9 +168,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42247488aee9301f2b2827e7ebaa85f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnGameStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchColor:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCaptureColor:
+    m_PersistentCalls:
+      m_Calls: []
   gamePreset: {fileID: 11400000, guid: 28115657ebf65138eb71bfeff18f02f9, type: 2}
+  _useColorSampler: 1
+  _runTimer: 1
+  _viewColorSampler: {fileID: 0}
+--- !u!114 &262534089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262534086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a95049b5967992eb861c95ad2a56b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _viewRenderTexture: {fileID: 8400000, guid: 924feda28828736d69ed3617f6bccad8, type: 2}
-  textureTestPlane: {fileID: 2100000, guid: ea294a88b7c5595a1b7690c5ade8a0a2, type: 2}
 --- !u!1 &455469966
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +541,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563906094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.97, z: -8.32}
+  m_LocalPosition: {x: 0.1, y: 1, z: -8.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

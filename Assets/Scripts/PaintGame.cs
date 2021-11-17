@@ -19,7 +19,7 @@ public class PaintGame : MonoBehaviour
 
     private GameColor _currentColor;
     private int _currentColorIndex = 0;
-    private bool _colorCaptured;
+    private bool _foundColor;
 
     private float _gameTimer = 0.0f;
 
@@ -68,19 +68,18 @@ public class PaintGame : MonoBehaviour
                 _viewColorSampler.CaptureColorOnScreen(0.5f,0.5f);
 
             bool matchesColor = _currentColor.IsColorInRange(sampledColor);
-
             // Use this bool to only send the efent once after finding the right
             // color
-            bool foundColor = false;
-            if(matchesColor && !foundColor)
+            
+            if(matchesColor && !_foundColor)
             {
                 OnCaptureColor.Invoke(sampledColor);
-                
-                foundColor = true;
+                Debug.Log(matchesColor);
+                _foundColor = true;
 
             }
             else if(!matchesColor)
-                foundColor = false;
+                _foundColor = false;
         }
 
 

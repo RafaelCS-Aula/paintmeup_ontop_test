@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" ml="UnityEditor.XR.MagicLeap" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="height: 100%;">
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="action-button" style="width: 40%; left: 30%; bottom: auto; top: 85%; justify-content: flex-start; align-items: center; height: 40px; white-space: normal;" />
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="timer-label" style="left: 30%; width: 40%; align-items: center; justify-content: flex-start; white-space: normal; -unity-text-align: upper-center; top: -4%;" />
+    </ui:VisualElement>
+</ui:UXML>

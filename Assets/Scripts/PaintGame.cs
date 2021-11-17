@@ -6,9 +6,10 @@ using UnityEngine.Events;
 public class PaintGame : MonoBehaviour
 {
 
-    public UnityEvent OnGameStart;
+    public UnityEvent<PaintGamePresets> OnGameStart;
     public UnityEvent OnGameEnd;
     public UnityEvent<GameColor> OnSwitchColor;
+    public UnityEvent<GameColor> OnKeepOldColor;
 
     public UnityEvent<Color> OnCaptureColor;
 
@@ -78,8 +79,12 @@ public class PaintGame : MonoBehaviour
                 _foundColor = true;
 
             }
-            else if(!matchesColor)
+            else if(!matchesColor && _foundColor)
+            {
                 _foundColor = false;
+                OnKeepOldColor.Invoke(_currentColor);
+            }
+                
         }
 
 
@@ -94,7 +99,7 @@ public class PaintGame : MonoBehaviour
         if(!_viewColorSampler) // If still nothing, don't try to use it
             _useColorSampler = false;
 
-        OnGameStart.Invoke();
+        OnGameStart.Invoke(gamePreset);
         OnSwitchColor.Invoke(_currentColor);
     }
     

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8027931712337498184}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PaintableObject
-  m_TagString: Untagged
+  m_TagString: ARObjects
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 862666102974096743}
   - component: {fileID: 6240371390102455057}
   - component: {fileID: 2942551698698216141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4979,7 +4979,7 @@ GameObject:
   - component: {fileID: 5929842601424076592}
   - component: {fileID: 8470339528237324504}
   - component: {fileID: 6416356941587086090}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

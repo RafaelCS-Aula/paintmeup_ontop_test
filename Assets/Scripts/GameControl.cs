@@ -12,6 +12,8 @@ public class GameControl : MonoBehaviour
     private Label _timerLabel;
 
     private float _timerValue;
+
+    private bool _gameFinished = false;
     public UnityEvent OnActionPressed;
     
     // Start is called before the first frame update
@@ -26,10 +28,13 @@ public class GameControl : MonoBehaviour
     }
     public void StartTimer(PaintGamePresets gamePreset)
     {
+        _gameFinished = false;
         _timerValue = gamePreset.GameDuration;
     }
     private void UpdateTimer()
     {
+        if(_gameFinished)
+            return;
         _timerLabel.text = ((int)_timerValue).ToString();
         
         if(_timerValue>0)
@@ -44,6 +49,22 @@ public class GameControl : MonoBehaviour
 
         _timerLabel.style.color = textColor;
     }
+    public void ActivatePaintButton()
+    {
+        _actionButton.SetEnabled(true);
+        _actionButton.text  = "Paint!";
+        _actionButton.style.color = Color.white;
+
+        
+    }
+    public void DisablePaintButton()
+    {
+        _actionButton.SetEnabled(false);
+        _actionButton.text  = "Nothing to Paint!";
+        _actionButton.style.color = Color.white;
+
+        
+    }
     public void DisableActionButton(GameColor wantedColor)
     {
         _actionButton.SetEnabled(false);
@@ -53,6 +74,16 @@ public class GameControl : MonoBehaviour
         _timerLabel.style.color = wantedColor.DisplayColor;
     }
 
+    public void ChangeUIToEnding(bool victory)
+    {
+        if(victory)
+            _timerLabel.text = "Good Job!";
+        else
+            _timerLabel.text = "Bad Job!";
+
+        _timerLabel.style.color = Color.white;
+        _gameFinished = true;
+    }
     private void Update() {
         UpdateTimer();
     }

@@ -1,8 +1,16 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System;
+
+
 
 public class ViewColorSampler : MonoBehaviour 
 {
     [SerializeField] private RenderTexture _viewRenderTexture;
+    
+    [HideInInspector] public List<Color> storedColors = new List<Color>();
+    
+    private Color _lastSeenColor = new Color();
     public Color CaptureColorOnScreen(float x, float y)
     {
         x = Mathf.Clamp01(x);
@@ -18,16 +26,16 @@ public class ViewColorSampler : MonoBehaviour
         //textureTestPlane.mainTexture =  texture;
         
         // Matches the current color's range with the center of the view image
-        Color textureColor = texture.GetPixel(
+        Color pixelColor = texture.GetPixel(
         (int)(texture.width * x),
         (int)(texture.height * y ));
         RenderTexture.active = null;
-        Debug.Log("Pixel color in view: " + textureColor);
-        return textureColor;
-        
-     
+        Debug.Log("Pixel color in view: " + pixelColor);
+        _lastSeenColor = pixelColor;
+        return pixelColor;
         
        
     }
 
+    public void StoreColor() => storedColors.Add(_lastSeenColor);
 }

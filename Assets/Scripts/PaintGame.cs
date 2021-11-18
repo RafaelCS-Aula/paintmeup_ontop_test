@@ -7,7 +7,7 @@ public class PaintGame : MonoBehaviour
 {
 
     public UnityEvent<PaintGamePresets> OnGameStart;
-    public UnityEvent OnGameEnd;
+    public UnityEvent<bool> OnGameEnd;
     public UnityEvent<GameColor> OnSwitchColor;
     public UnityEvent<GameColor> OnKeepOldColor;
 
@@ -26,6 +26,7 @@ public class PaintGame : MonoBehaviour
     private bool _foundColor;
 
     private float _gameTimer = 0.0f;
+    private bool _gameOver = false;
 
     [SerializeField]
     private bool _runTimer = true;
@@ -33,11 +34,13 @@ public class PaintGame : MonoBehaviour
     [SerializeField]
     private ViewColorSampler _viewColorSampler;
 
+
     //Object detection
     [SerializeField] private LayerMask _detectableObjects;
 
     private bool _foundObject = false;
     private bool _detectingObject = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +66,11 @@ public class PaintGame : MonoBehaviour
             if(!AdvanceColor())
             {
                 if(_gameTimer >= gamePreset.GameDuration)
-                    OnGameEnd.Invoke();
+                {
+                    _gameOver = true;
+                    OnGameEnd.Invoke(false);
+                }
+                    
 
             }
 
@@ -121,13 +128,15 @@ public class PaintGame : MonoBehaviour
 
     public void StartGame()
     {
+        _gameOver = true;
         _currentColorIndex = 0;
         _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
         if(!_viewColorSampler) //Try to get the sampler from this game object
             _viewColorSampler = GetComponent<ViewColorSampler>();
         if(!_viewColorSampler) // If still nothing, don't try to use it
             _useColorSampler = false;
-
+        if(_viewColorSampler) //Clean the stored color list from past game
+            _viewColorSampler.storedColors = new List<Color>();
         OnGameStart.Invoke(gamePreset);
         OnSwitchColor.Invoke(_currentColor);
     }
@@ -149,4 +158,27 @@ public class PaintGame : MonoBehaviour
         return true;
     }
 
+    private void ColorFound()
+    {
+        _viewColorSampler.StoreColor();
+        if(!AdvanceColor())
+        {
+            //If player has found all colors then win the game.
+            OnGameEnd.Invoke(true);
+            _gameOver = true;
+        }
+
+    }
+
+    //Paint object logic
+    private void PaintObject(){}
+    public void ReactToAction()
+    {
+        if(_gameOver)
+            StartGame();
+        else if(_detectingObject)
+            PaintObject();
+        else if(_foundColor)
+            ColorFound();
+    }
 }

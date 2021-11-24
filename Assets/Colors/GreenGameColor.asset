@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42b8a6e1396f2bc73a3f2ece0948633d, type: 3}
-  m_Name: RedGameColor
+  m_Name: GreenGameColor
   m_EditorClassIdentifier: 
   _colorRange:
     serializedVersion: 2
-    key0: {r: 1, g: 0.08083095, b: 0, a: 1}
-    key1: {r: 0.4433962, g: 0.025580551, b: 0, a: 1}
+    key0: {r: 0, g: 1, b: 0.07073355, a: 1}
+    key1: {r: 0.07657721, g: 0.46226418, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -41,4 +41,4 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  _colorName: Red
+  _colorName: Green

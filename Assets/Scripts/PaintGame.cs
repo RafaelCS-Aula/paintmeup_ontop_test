@@ -18,6 +18,10 @@ public class PaintGame : MonoBehaviour
 
     public PaintGamePresets gamePreset;
 
+    
+    [SerializeField]
+    private ViewColorSampler _viewColorSampler;
+
     [SerializeField]
     private bool _useColorSampler = true;
 
@@ -31,17 +35,19 @@ public class PaintGame : MonoBehaviour
     [SerializeField]
     private bool _runTimer = true;
 
-    [SerializeField]
-    private ViewColorSampler _viewColorSampler;
+    
 
 
     //Object detection
-    [SerializeField] private LayerMask _detectableObjects;
+    [SerializeField]
+    private bool _useMeshPainter = true;
 
+    [SerializeField]
+    private PaintableMesh _meshPainter;
     private bool _foundObject = false;
     private bool _detectingObject = false;
     
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -57,12 +63,33 @@ public class PaintGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Detect Object
+        if(_useMeshPainter)
+        {
+            _detectingObject = _meshPainter.DetectMesh();
+
+            if(_detectingObject && !_foundObject)
+            {
+                OnBeginDetectObject.Invoke();
+                _foundObject = true;
+            }
+            else if(!_detectingObject && _foundObject)
+            {
+                OnStopDetectObject.Invoke();
+                _foundObject = false;
+            }
+        }
+
+        if(_gameOver)
+            return;
+
         if(_runTimer)
             _gameTimer += Time.deltaTime;
 
         // Check if the time for this color has passed
-        if(Mathf.Round(_gameTimer) % Mathf.Round(gamePreset.SecondsPerColor) == 0)
+        if(_gameTimer % gamePreset.SecondsPerColor == 0)
         {
+            Debug.Log("Color timer expired");
             if(!AdvanceColor())
             {
                 if(_gameTimer >= gamePreset.GameDuration)
@@ -103,32 +130,14 @@ public class PaintGame : MonoBehaviour
                 
         }
 
-        //Detect Object
-        RaycastHit hits;
-        Ray centerRay = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f));
-        _detectingObject = Physics.Raycast(centerRay,out hits, 2000,_detectableObjects);
-
-        if(_detectingObject && !_foundObject)
-        {
-            OnBeginDetectObject.Invoke();
-            _foundObject = true;
-        }
-        else if(!_detectingObject && _foundObject)
-        {
-            OnStopDetectObject.Invoke();
-            _foundObject = false;
-        }
-
-
-
-    
-
+        
+        
 
     }
 
     public void StartGame()
     {
-        _gameOver = true;
+        _gameOver = false;
         _currentColorIndex = 0;
         _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
         if(!_viewColorSampler) //Try to get the sampler from this game object
@@ -137,6 +146,11 @@ public class PaintGame : MonoBehaviour
             _useColorSampler = false;
         if(_viewColorSampler) //Clean the stored color list from past game
             _viewColorSampler.storedColors = new List<Color>();
+
+        if(!_meshPainter) //Try to get the painter from this game object
+            _meshPainter = GetComponent<PaintableMesh>();
+        if(!_meshPainter) // If still nothing, don't try to use it
+            _useMeshPainter = false;
         OnGameStart.Invoke(gamePreset);
         OnSwitchColor.Invoke(_currentColor);
     }
@@ -146,15 +160,17 @@ public class PaintGame : MonoBehaviour
     ///<returns> True if successful, False if all colors have been advanced trough</returns>
     private bool AdvanceColor()
     {
-        if(_currentColorIndex == gamePreset.ColorsToPaint.Length - 1)
+        if(_currentColorIndex >= gamePreset.ColorsToPaint.Length - 1)
         {
             //All colors have been advanced
             return false;
         }
         
+        
         _currentColorIndex ++;
         _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
         OnSwitchColor.Invoke(_currentColor);
+        Debug.Log("Advanced to color " + _currentColor);
         return true;
     }
 
@@ -170,14 +186,13 @@ public class PaintGame : MonoBehaviour
 
     }
 
-    //Paint object logic
-    private void PaintObject(){}
+  
     public void ReactToAction()
     {
         if(_gameOver)
             StartGame();
-        else if(_detectingObject)
-            PaintObject();
+        else if(_detectingObject && _viewColorSampler.storedColors.Count > 0)
+            _meshPainter.PaintTriangle(_viewColorSampler.storedColors[_viewColorSampler.storedColors.Count-1]);
         else if(_foundColor)
             ColorFound();
     }

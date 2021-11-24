@@ -16,3 +16,5 @@ MonoBehaviour:
   _extraEndSeconds: 20
   _colorsToPaint:
   - {fileID: 11400000, guid: 42e7ae21a9e3821aaa83bff36a0dd1d1, type: 2}
+  - {fileID: 11400000, guid: 63fce9837e7571ed892ee82f90e6621c, type: 2}
+  - {fileID: 11400000, guid: de9930c04f3e51fef935013abe5f08d6, type: 2}

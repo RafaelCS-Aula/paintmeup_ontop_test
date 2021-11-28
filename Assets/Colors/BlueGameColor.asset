@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colorRange:
     serializedVersion: 2
-    key0: {r: 0, g: 0.73424315, b: 1, a: 1}
-    key1: {r: 0, g: 0.38991156, b: 0.7075472, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0, g: 0, b: 0.39215687, a: 1}
+    key1: {r: 0, g: 1, b: 1, a: 1}
+    key2: {r: 0.19607843, g: 0.19607843, b: 1, a: 0}
+    key3: {r: 0, g: 0, b: 1, a: 0}
+    key4: {r: 0, g: 0, b: 1, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
+    ctime1: 18311
+    ctime2: 42983
+    ctime3: 65535
+    ctime4: 55512
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -39,6 +39,6 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   _colorName: Blue

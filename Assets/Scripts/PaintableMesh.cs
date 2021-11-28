@@ -12,6 +12,7 @@ public class PaintableMesh : MonoBehaviour
 
   
     [SerializeField] private float _brushSize;
+    public Color _brushColor;
 
     public bool DetectMesh()
     {
@@ -23,7 +24,7 @@ public class PaintableMesh : MonoBehaviour
         return detecting;
     }
 
-    public void PaintTriangle(Color color)
+    public void PaintTriangle()
     {
         _mesh = hits.collider.GetComponent<MeshFilter>().mesh;
         if(_mesh == null)
@@ -35,7 +36,8 @@ public class PaintableMesh : MonoBehaviour
         if (_mesh.colors.Length > 0) 
         {
             colors = _mesh.colors;
-        } else 
+        } 
+        else 
         {
             colors = new Color[vertices.Length];
         }
@@ -45,28 +47,20 @@ public class PaintableMesh : MonoBehaviour
             float sqrMag = (vertPos - hits.point).sqrMagnitude;
             if (sqrMag > _brushSize) 
             {
-                colors[i] = Color.white;
-                continue;
+                if(_mesh.colors.Length == 0)
+                {
+                    colors[i] = Color.white;
+                    continue;
+                }
+                    
             } 
             else 
             {
                     
-                colors[i] = color;
+                colors[i] = _brushColor;
             }
         }
         _mesh.colors = colors;
-
-       /* int v0 = triangles[i0];
-        int v1 = triangles[i1];
-        int v2 = triangles[i2];
-
-        
-        //Debug.Log("colors array length:" + colors.Length);
-        colors[v0] = color;
-        colors[v1] = color;
-        colors[v2] = color;
-
-        _mesh.colors = colors;*/
 
     }
 

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: StandartGame
   m_EditorClassIdentifier: 
   _secondsPerColor: 20
-  _extraEndSeconds: 20
+  _extraEndSeconds: 0
   _colorsToPaint:
-  - {fileID: 11400000, guid: 42e7ae21a9e3821aaa83bff36a0dd1d1, type: 2}
+  - {fileID: 11400000, guid: 0f59d1a5294861f1783dcb907cbceffb, type: 2}
   - {fileID: 11400000, guid: 63fce9837e7571ed892ee82f90e6621c, type: 2}
   - {fileID: 11400000, guid: de9930c04f3e51fef935013abe5f08d6, type: 2}
+  - {fileID: 11400000, guid: 28727b4257edd7a9a8b73f1a9af1f64c, type: 2}
+  - {fileID: 11400000, guid: 42e7ae21a9e3821aaa83bff36a0dd1d1, type: 2}

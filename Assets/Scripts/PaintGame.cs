@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.SceneManagement;
 public class PaintGame : MonoBehaviour
 {
 
@@ -84,23 +84,16 @@ public class PaintGame : MonoBehaviour
             return;
 
         if(_runTimer)
-            _gameTimer += Time.deltaTime;
+            _gameTimer -= Time.deltaTime;
 
         // Check if the time for this color has passed
-        if(_gameTimer % gamePreset.SecondsPerColor == 0)
+        if(_gameTimer <= 0)
         {
             Debug.Log("Color timer expired");
-            if(!AdvanceColor())
-            {
-                if(_gameTimer >= gamePreset.GameDuration)
-                {
-                    _gameOver = true;
-                    OnGameEnd.Invoke(false);
-                }
+
                     
-
-            }
-
+            OnGameEnd.Invoke(false);
+            _gameOver = true;
         }
 
         
@@ -153,6 +146,8 @@ public class PaintGame : MonoBehaviour
             _useMeshPainter = false;
         OnGameStart.Invoke(gamePreset);
         OnSwitchColor.Invoke(_currentColor);
+
+        _gameTimer = gamePreset.SecondsPerColor;
     }
     
     ///<summary>Tries to advance to the next color in the preset list
@@ -170,11 +165,12 @@ public class PaintGame : MonoBehaviour
         _currentColorIndex ++;
         _currentColor = gamePreset.ColorsToPaint[_currentColorIndex];
         OnSwitchColor.Invoke(_currentColor);
+        _gameTimer = gamePreset.SecondsPerColor;
         Debug.Log("Advanced to color " + _currentColor);
         return true;
     }
 
-    private void ColorFound()
+    private void ActOnColor()
     {
         _viewColorSampler.StoreColor();
         if(!AdvanceColor())
@@ -186,14 +182,18 @@ public class PaintGame : MonoBehaviour
 
     }
 
-  
+    public void UpdatePainterBrush(int colorIndex) => _meshPainter._brushColor = _viewColorSampler.storedColors[colorIndex];
+
     public void ReactToAction()
     {
-        if(_gameOver)
-            StartGame();
+        if(_gameOver && !_detectingObject)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //StartGame();
         else if(_detectingObject && _viewColorSampler.storedColors.Count > 0)
-            _meshPainter.PaintTriangle(_viewColorSampler.storedColors[_viewColorSampler.storedColors.Count-1]);
-        else if(_foundColor)
-            ColorFound();
+        {
+            _meshPainter.PaintTriangle();
+        }
+        else if(_foundColor && !_gameOver)
+            ActOnColor();
     }
 }

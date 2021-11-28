@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-
+using UnityEngine.Events;
 
 
 public class ViewColorSampler : MonoBehaviour 
@@ -10,6 +10,8 @@ public class ViewColorSampler : MonoBehaviour
     
     [HideInInspector] public List<Color> storedColors = new List<Color>();
     
+    [SerializeField] public UnityEvent<Color, int> OnSaveColor;
+
     private Color _lastSeenColor = new Color();
     public Color CaptureColorOnScreen(float x, float y)
     {
@@ -37,5 +39,10 @@ public class ViewColorSampler : MonoBehaviour
        
     }
 
-    public void StoreColor() => storedColors.Add(_lastSeenColor);
+    public void StoreColor()
+    {
+        
+        storedColors.Add(_lastSeenColor);
+        OnSaveColor.Invoke(_lastSeenColor, storedColors.Count - 1);
+    } 
 }

@@ -25,7 +25,7 @@ public class GameControl : MonoBehaviour
     private Button _colorSelectActiveButton = null;
 
     // Start is called before the first frame update
-    void OnEnable()
+    void Awake()
     {
         var uiRoot = GetComponent<UIDocument>().rootVisualElement;
         _actionButton = uiRoot.Q<Button>("action-button");
@@ -35,7 +35,9 @@ public class GameControl : MonoBehaviour
         _timerLabel = uiRoot.Q<Label>("timer-label");    
 
         _colorSelectGroup = uiRoot.Q<GroupBox>("color-select-group");
-        //_gamePaused = true;
+        Debug.Log(_colorSelectGroup);
+        _actionButton.text = "Find Bob...";
+        _timerLabel.text = "Get Ready...";
     }
     public void StartTimer(PaintGamePresets gamePreset)
     {
@@ -71,7 +73,7 @@ public class GameControl : MonoBehaviour
 
     public void SelectColor(int index)
     {
-        Debug.Log("Selecting color of index: " + index);
+        //Debug.Log("Selecting color of index: " + index);
         if(_colorSelectActiveButton != null)
             _colorSelectActiveButton.style.borderLeftWidth = 1;
 
@@ -126,6 +128,7 @@ public class GameControl : MonoBehaviour
 
     public void DisableActionButton(GameColor wantedColor)
     {
+        //Debug.Log("Disable Action BUtton");
         _actionButton.SetEnabled(false);
         _actionButton.text  = $"Find {wantedColor.ColorName}";
         _actionButton.style.color = wantedColor.DisplayColor;

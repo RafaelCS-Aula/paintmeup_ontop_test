@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+
 public class PaintGame : MonoBehaviour
 {
 
@@ -76,6 +77,8 @@ public class PaintGame : MonoBehaviour
             else if(!_detectingObject && _foundObject)
             {
                 OnStopDetectObject.Invoke();
+                if(!_gameOver)
+                    OnKeepOldColor.Invoke(_currentColor);
                 _foundObject = false;
             }
         }
@@ -89,7 +92,7 @@ public class PaintGame : MonoBehaviour
         // Check if the time for this color has passed
         if(_gameTimer <= 0)
         {
-            Debug.Log("Color timer expired");
+            //Debug.Log("Color timer expired");
 
                     
             OnGameEnd.Invoke(false);
@@ -100,18 +103,19 @@ public class PaintGame : MonoBehaviour
         if(_useColorSampler && !_detectingObject)
         {
             
-            
+            //Debug.Log("Searching color");
             Color sampledColor = 
                 _viewColorSampler.CaptureColorOnScreen(0.5f,0.5f);
 
             bool matchesColor = _currentColor.IsColorInRange(sampledColor);
             // Use this bool to only send the efent once after finding the right
             // color
-            
+            //Debug.Log(matchesColor);
+            //Debug.Log(_foundColor);
             if(matchesColor && !_foundColor)
             {
                 OnCaptureColor.Invoke(sampledColor);
-                Debug.Log(matchesColor);
+                
                 _foundColor = true;
 
             }
@@ -187,7 +191,11 @@ public class PaintGame : MonoBehaviour
     public void ReactToAction()
     {
         if(_gameOver && !_detectingObject)
+        {
+            
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+            
             //StartGame();
         else if(_detectingObject && _viewColorSampler.storedColors.Count > 0)
         {

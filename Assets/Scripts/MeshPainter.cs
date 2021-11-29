@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaintableMesh : MonoBehaviour
+public class MeshPainter : MonoBehaviour
 {
     [SerializeField] private LayerMask _detectableObjects;
 

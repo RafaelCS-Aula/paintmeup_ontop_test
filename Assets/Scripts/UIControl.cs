@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(UIDocument))]
-public class GameControl : MonoBehaviour
+public class UIControl : MonoBehaviour
 {
     
     private Button _actionButton;

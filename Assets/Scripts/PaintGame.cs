@@ -44,7 +44,7 @@ public class PaintGame : MonoBehaviour
     private bool _useMeshPainter = true;
 
     [SerializeField]
-    private PaintableMesh _meshPainter;
+    private MeshPainter _meshPainter;
     private bool _foundObject = false;
     private bool _detectingObject = false;
     
@@ -145,7 +145,7 @@ public class PaintGame : MonoBehaviour
             _viewColorSampler.storedColors = new List<Color>();
 
         if(!_meshPainter) //Try to get the painter from this game object
-            _meshPainter = GetComponent<PaintableMesh>();
+            _meshPainter = GetComponent<MeshPainter>();
         if(!_meshPainter) // If still nothing, don't try to use it
             _useMeshPainter = false;
         OnGameStart.Invoke(gamePreset);

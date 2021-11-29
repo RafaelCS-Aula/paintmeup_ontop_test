@@ -32,7 +32,7 @@ public class ViewColorSampler : MonoBehaviour
         (int)(texture.width * x),
         (int)(texture.height * y ));
         RenderTexture.active = null;
-        Debug.Log("Pixel color in view: " + pixelColor);
+       // Debug.Log("Pixel color in view: " + pixelColor);
         _lastSeenColor = pixelColor;
         return pixelColor;
         

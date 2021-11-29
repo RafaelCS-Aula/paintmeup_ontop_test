@@ -19,7 +19,7 @@ public class GameColor : ScriptableObject
 
         do
         {
-            Debug.Log("Evaluating against color: " + _colorRange.Evaluate(evalProgress) + "at step of the gradient: " + evalProgress);
+            //Debug.Log("Evaluating against color: " + _colorRange.Evaluate(evalProgress) + "at step of the gradient: " + evalProgress);
             if(CompareColors(_colorRange.Evaluate(evalProgress),color))
                 return true;
 
